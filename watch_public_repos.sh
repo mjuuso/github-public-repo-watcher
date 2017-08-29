@@ -6,12 +6,13 @@
 # Configure these
 ORG_NAME="name-of-organization"
 NOTIFY_EMAIL="email-to-notify@domain.whatever"
+RESULTS="100"
 
 # We need to store the list of repositories
 KNOWN_REPOS_FILE="/tmp/known-repos-${ORG_NAME}.list"
 
 # Get the list of repositories from the Github API
-REPOS=$(curl -s https://api.github.com/orgs/$ORG_NAME/repos | grep full_name | cut -d'"' -f4)
+REPOS=$(curl -s "https://api.github.com/orgs/$ORG_NAME/repos?per_page=$RESULTS" | grep full_name | cut -d'"' -f4)
 
 # Send a notification if changes have been made
 if [[ "$(cat $KNOWN_REPOS_FILE)" != "$REPOS" ]]; then
